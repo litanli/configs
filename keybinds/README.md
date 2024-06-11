@@ -1,11 +1,15 @@
 # Keybinds
-We map CapsLock + ijkl to arrow keys, including enabling cmd and opt modifiers. Plus, support text highlighting with the shift key plus any combinations above. We use the [Karabiner-Elements](https://karabiner-elements.pqrs.org/) keybind customizer for MacOS and [AutoHotkey](https://www.autohotkey.com/) for Windows. This allows home-row typing without moving my right hand to use arrow keys.
-
-
+We map CapsLock + ijkl to arrow keys, including enabling cmd and opt modifiers.
+This allows home-row typing without moving your right hand to use the arrow 
+keys. Plus, we support text highlighting with the shift key plus any 
+combinations above. We use the [Karabiner-Elements](https://karabiner-elements.pqrs.org/) 
+keybind customizer for MacOS and [AutoHotkey](https://www.autohotkey.com/) for 
+Windows.
 
 ## Karabiner Elements
 ### Complex Modifications JSON files
-Add the included JSON files' contents to Karabiner-Elements' Complex Modifications tab. <br>
+Add the included JSON files' contents to Karabiner-Elements' Complex 
+Modifications tab. <br>
 CapsLock + ijkl : arrow keys <br>
 Cmd + ijkl : Jump to top, end of line, EOF, beginning of line <br>
 Opt + jl : Jump to beginning of word, end of word <br>
@@ -25,4 +29,6 @@ left_control : left_command <br>
 left_option : left_control
 
 ## AutoHotkey
-Run the included .ahk file as a background process (just install AutoHotkey and open the file. Windows should recognize AutoHotkey as the default application for .ahk file extensions and run the file as a background process.)
+Install AutoHotkey and open the included .ahk file. Windows should recognize 
+AutoHotkey as the default application for the .ahk file extension and run the 
+AutoHotkey script as a background process.
