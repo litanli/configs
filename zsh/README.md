@@ -1,0 +1,2 @@
+# Oh My Zsh
+We use [Oh My Zsh](https://ohmyz.sh/) configs for ZShell, mainly because they have nice themes. Download Oh My Zsh and replace ~/.oh-my-zsh/themes/robbyrussell.zsh-theme with the contents of robbyrussell.zsh-theme provided here (it adds an absolute path before the git branch name in the shell prompt).
