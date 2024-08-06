@@ -1,0 +1,53 @@
+#!/bin/bash
+#allows terminal to throw exception where it finds the error and then stop the code execution
+set -e
+
+#get black, isort and python executable from base env
+conda_bin_base=$(echo $CONDA_EXE | rev | cut -c 6- | rev)
+black_exe=${conda_bin_base}black
+isort_exe=${conda_bin_base}isort
+python_exe=${conda_bin_base}python
+
+#install black and isort into base env if not found there
+if [[ ! -f "$black_exe" ]]
+then
+  echo "black not found in base environment! Installing black and black[jupyter]"
+  eval $python_exe -m pip install black==23.3.0 black[jupyter]
+fi
+
+if [[ ! -f "$isort_exe" ]]
+then
+  echo "isort not found in base environment! Installing now"
+  eval $python_exe -m pip install isort==5.12.0
+fi
+
+#get list of staged and unstaged .py scripts
+changed_files=$(git diff --staged --name-only --diff-filter=ACM | grep '\.py\|\.ipynb' || true)
+changed_unstaged_files=$(git diff --name-only --diff-filter=ACM | grep '\.py\|\.ipynb' || true)
+
+tmp_list1=$(mktemp)
+tmp_list2=$(mktemp)
+
+# Store both lists in the unique temporary files
+echo "$changed_files" | sort > "$tmp_list1"
+echo "$changed_unstaged_files" | sort > "$tmp_list2"
+
+#find common files, if any
+common_files=$(comm -12 "$tmp_list1" "$tmp_list2")
+if [[ $common_files ]]
+then
+  echo "There are un-staged changes to the following staged file."\
+      "Either git stash those changes or git add them again. $common_files"
+  exit 1
+fi
+
+#run black and isort on staged .py scripts and black on staged .ipynb notebooks
+if [[ $changed_files ]]
+then
+  eval $python_exe -m black $changed_files
+  eval $python_exe -m isort $changed_files
+  git add $changed_files
+fi
+
+# Clean up the temporary files
+rm "$tmp_list1" "$tmp_list2"
