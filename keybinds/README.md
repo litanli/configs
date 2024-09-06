@@ -11,7 +11,7 @@ Windows.
 Add the included JSON files' contents to Karabiner-Elements' Complex 
 Modifications tab. <br>
 CapsLock + ijkl : arrow keys <br>
-Cmd + ijkl : Jump to top, end of line, EOF, beginning of line <br>
+Cmd + ijkl : Jump to top, beginning of line, EOF, end of line <br>
 Opt + jl : Jump to beginning of word, end of word <br>
 Shift + combo above : syntax highlighting <br>
 
