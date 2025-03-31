@@ -1,0 +1,4 @@
+# Useful aliases - add these to .bashrc and .zshrc
+alias gaa="git add --all"
+alias gs="git status"
+alias gd="git diff"
