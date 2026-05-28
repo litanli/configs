@@ -2,3 +2,5 @@
 alias gaa="git add --all"
 alias gs="git status"
 alias gd="git diff"
+alias ns="nvidia-smi"
+alias cod="code --diff"
