@@ -1,0 +1,8 @@
+{
+  "name": "litanli-plugins",
+  "owner": { "name": "litanli", "email": "litan.li3@gmail.com" },
+  "metadata": { "description": "Personal plugins", "version": "1.0.0" },
+  "plugins": [
+    { "name": "pstack", "source": "./pstack" }
+  ]
+}
