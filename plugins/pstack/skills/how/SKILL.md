@@ -42,11 +42,12 @@ Decompose the question into 2-4 parallel exploration angles, each a distinct sli
 
 The right decomposition depends on the question. Use your judgment. Narrow questions: 2 explorers is fine. Broad subsystems: up to 4.
 
-Spawn all explorers in a single message:
+Spawn all explorers in a single message, using the `Agent` tool:
 
-- `subagent_type`: `generalPurpose`
-- `model`: your configured how-explorer model (default `grok-4.6-fast-xhigh`)
-- `readonly`: `true`
+- `subagent_type`: `Explore`
+- `model`: `sonnet`
+
+`Explore` is read-only by construction. Its tool list excludes `Edit`, `Write`, and `NotebookEdit`, so exploration cannot mutate the repo. In fbsource, substitute `meta_codesearch:code-search`, which is also read-only.
 
 Each explorer gets the same base prompt from `references/explorer-prompt.md` plus a specific exploration angle naming its slice. Each explorer should:
 - Start broad: Glob for relevant directories, Grep for key types/interfaces/class names
@@ -61,11 +62,10 @@ Then proceed to Step 3.
 
 ### Step 2b. Direct Explain (simple questions)
 
-Spawn a single Task subagent that explores and explains in one pass:
+Spawn a single `Agent` subagent that explores and explains in one pass:
 
-- `subagent_type`: `generalPurpose`
-- `model`: your configured how-explainer model (default `claude-fable-5-thinking-max`)
-- `readonly`: `true`
+- `subagent_type`: `general-purpose`
+- `model`: `fable`
 
 The agent does its own exploration (Glob, Grep, Read) and writes the explanation directly. Read `references/explainer-prompt.md` for the communication style and output format. Same structure, just no explorer findings as input.
 
@@ -73,11 +73,10 @@ Proceed to Step 4.
 
 ### Step 3. Synthesize (complex questions only)
 
-Once all explorers return, spawn a single Task subagent to synthesize their findings into one coherent explanation:
+Once all explorers return, spawn a single `Agent` subagent to synthesize their findings into one coherent explanation:
 
-- `subagent_type`: `generalPurpose`
-- `model`: your configured how-explainer model (default `claude-fable-5-thinking-max`)
-- `readonly`: `true`
+- `subagent_type`: `general-purpose`
+- `model`: `fable`
 
 The explainer gets all explorers' findings and writes the human-facing explanation (output format below). Read `references/explainer-prompt.md` for the full prompt template. The explainer reconciles overlapping findings, resolves contradictions, and weaves the slices into a unified picture.
 
@@ -109,12 +108,17 @@ Run the full explain flow above (Steps 1-4). You must understand the architectur
 
 ### Step 2. Spawn Critics
 
-After the explanation is complete, spawn one architectural critic per model in your configured how-critics list (defaults `claude-fable-5-thinking-max`, `gpt-5.6-sol-max`, `grok-4.6-fast-xhigh`, `claude-opus-5-thinking-xhigh`), all in a single message.
+After the explanation is complete, spawn one architectural critic per model in the list below, all in a single message.
+
+Use three critics, one each on `opus`, `fable`, and `sonnet`.
+
+Three, not four, because the panel is capped by what the `Agent` tool exposes. The upstream skill runs four critics across three vendors, so a blind spot in one training distribution is not shared by the others. Here every available model is Anthropic, so a fourth entry would duplicate a model already on the panel and fake a fourth voice. `haiku` is the only other option and it is too weak to critique architecture. Three distinct models is the honest fan-out.
+
+If three proves too thin, buy diversity by lens rather than by vendor. Give each critic a different question (coupling, failure modes, what a newcomer misreads) instead of a different model. Don't build that until three falls short.
 
 For each critic:
-- `subagent_type`: `generalPurpose`
-- `model`: one model from the configured how-critics list. These are minimum reasoning levels. The lead should escalate any model when the architecture warrants deeper analysis.
-- `readonly`: `true`
+- `subagent_type`: `Explore`
+- `model`: one model from the list above. These are minimum reasoning levels. The lead should escalate any model when the architecture warrants deeper analysis.
 
 Read `references/critic-prompt.md` for the prompt template. Each critic gets:
 1. The explanation from Step 1 (so they don't re-explore)
