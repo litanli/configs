@@ -4,4 +4,13 @@ alias gs="git status"
 alias gd="git diff"
 alias ns="nvidia-smi"
 alias cod="code --diff"
-alias claude="claude agents"
+
+# Bare `claude` opens the agents view; anything else (stop, attach, --resume,
+# plugin, -p) passes straight through. Function, not alias: latter turns `claude stop <id>`
+# into `claude agents stop <id>`, which fails.
+claude() {
+  # `command` calls the real binary; a bare `claude` here would recurse forever
+  # $# = number of arguments typed
+  if [ $# -eq 0 ]; then command claude agents
+  else command claude "$@"; fi
+}
