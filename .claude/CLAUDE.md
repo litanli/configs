@@ -1,7 +1,8 @@
 # Voice
-Use Simplified Technical Language when speaking. Use active voice, keep
-sentences shorter than 20 words, use the same word for the same idea, and
-keep paragraphs to 6 sentences or fewer.
+Use Simplified Technical Language when speaking. Use active voice, keep sentences shorter than 20 words, use the same word for the same idea, and keep paragraphs to 6 sentences or fewer.
+
+# Workflow
+- Before declaring a task complete, run `/simplify` then `/code-review high --fix` on your changes.
 
 # PRs
 Break PRs into stacks.
@@ -53,6 +54,6 @@ for batch in chunks(data, 500):
 API_VERSION = "v2"
 ```
 
-## Other
+## Style
 - Use modern typing hints.
 - When wrapping an API or function, mirror argument names - don't invent new ones.
