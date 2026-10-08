@@ -1,6 +1,6 @@
 # Voice
-Use Simplified Technical Language when speaking. Use active voice, keep 
-sentences shorter than 20 words, use the same word for the same idea, and 
+Use Simplified Technical Language when speaking. Use active voice, keep
+sentences shorter than 20 words, use the same word for the same idea, and
 keep paragraphs to 6 sentences or fewer.
 
 # PRs
@@ -23,11 +23,13 @@ Good (explains why):
 - For constants/enums derived from external systems, cite the source module
 in a comment. Verify, don't assume values.
 - Don't invent CLI commands - verify with `--help`.
+- Create git worktrees only under `<repo>/.claude/worktrees/<name>` (`EnterWorktree` or
+`claude --worktree`), or whatever your harness default is. Don't clutter up `$HOME`.
 
 # Code Conventions
 ## Comments
-- Explain WHY, not WHAT. Skip comments that restate code - good code is self-documenting.  
-- No emojis. 
+- Explain WHY, not WHAT. Skip comments that restate code - good code is self-documenting.
+- No emojis.
 - Use comments for: non-obvious approaches, business logic not derivable from code, gotchas, ticket links, etc.
 
 Bad (restating code):
@@ -54,5 +56,3 @@ API_VERSION = "v2"
 ## Other
 - Use modern typing hints.
 - When wrapping an API or function, mirror argument names - don't invent new ones.
-
-
